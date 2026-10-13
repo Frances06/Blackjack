@@ -1,0 +1,1 @@
+Put the supplied `player-ev.json` in `machine_learning/data/`. Baseline features: `decks`, `dealer_rule`, `category`, `hand`, `dealer_upcard`; target: `best_action`. Exclude all EV columns from classifier inputs to avoid target leakage. The dataset has no card history, count, bankroll, or bet-size target, so those require simulator-generated data.
