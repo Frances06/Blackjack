@@ -32,11 +32,17 @@ class Shoe:
     def decks_remaining(self): return max(len(self.cards)/52, 0.25)
     @property
     def true_count(self): return self.running_count / self.decks_remaining
-    def draw(self):
+    def draw(self, exposed=True):
+        """Draw a card; hidden cards are not counted until revealed."""
         if not self.cards: raise RuntimeError("Shoe empty; reshuffle before drawing")
         card = self.cards.pop()
-        self.running_count += HI_LO[card.rank]
+        if exposed:
+            self.running_count += HI_LO[card.rank]
         return card
+
+    def reveal(self, card):
+        """Add a previously hidden card to the count when it becomes visible."""
+        self.running_count += HI_LO[card.rank]
 
 def hand_value(cards):
     total = sum(c.value for c in cards)

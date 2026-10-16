@@ -17,4 +17,10 @@ class TestFoundation(unittest.TestCase):
         self.assertEqual(choose_bet(4, 35), 35)
     def test_six_deck_shoe(self):
         self.assertEqual(Shoe(6, seed=1).cards_remaining, 312)
+    def test_hidden_card_not_counted_until_revealed(self):
+        shoe = Shoe(1, seed=7)
+        card = shoe.draw(exposed=False)
+        self.assertEqual(shoe.running_count, 0)
+        shoe.reveal(card)
+        self.assertEqual(shoe.running_count, HI_LO[card.rank])
 if __name__ == "__main__": unittest.main()

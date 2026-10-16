@@ -7,12 +7,17 @@ def play_hand(shoe, bankroll, minimum=10, maximum=100):
     bet = choose_bet(shoe.true_count, bankroll, minimum, maximum)
     if bet <= 0: return bankroll, 0
     player = [shoe.draw(), shoe.draw()]
-    dealer = [shoe.draw(), shoe.draw()]
-    upcard = dealer[0]
+    # The dealer's hole card is physically dealt but remains hidden from the
+    # player, so it must not affect the count until it is revealed.
+    upcard = shoe.draw()
+    hole_card = shoe.draw(exposed=False)
+    dealer = [upcard, hole_card]
     while choose_action(player, upcard) == "HIT":
         player.append(shoe.draw())
         if hand_value(player) > 21:
+            shoe.reveal(hole_card)
             return bankroll - bet, -bet
+    shoe.reveal(hole_card)
     while hand_value(dealer) < 17:
         dealer.append(shoe.draw())
     p, d = hand_value(player), hand_value(dealer)
