@@ -8,7 +8,7 @@ from functools import lru_cache
 from heapq import heappush, heappop
 from itertools import count
 
-from blackjack import Shoe
+from simulation.blackjack import Shoe
 
 
 # ---------------------------------------------------------------------------
