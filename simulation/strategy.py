@@ -5,14 +5,16 @@ choose_action -- now plays from the player-EV dataset (player-ev.json):
                  for each hand it picks the highest-EV legal action.
 choose_action_baseline -- the original simple hit/stand rule, kept for comparison.
 
-player-ev.json is expected next to this file; call configure() to point at a
-different path or change the deck count / dealer rule (defaults: 6 decks, H17).
+player-ev.json is looked for in, in order: $BLACKJACK_EV_PATH, simulation/,
+machine_learning/data/. Call configure() to point at a different path or change
+the deck count / dealer rule (defaults: 6 decks, H17). The dealer rule here must
+match the one the game loop plays (run_simulation.Rules.hit_soft_17).
 """
 import json
 import os
 from dataclasses import dataclass
 
-from simulation.blackjack import hand_value
+from simulation.blackjack import hand_value, is_soft
 
 # ---------------------------------------------------------------------------
 # Betting (unchanged)
@@ -30,7 +32,7 @@ def choose_bet(true_count, bankroll, minimum=10, maximum=100):
 # ---------------------------------------------------------------------------
 # Original playing rule, kept as a baseline
 # ---------------------------------------------------------------------------
-def choose_action_baseline(player_cards, dealer_upcard):
+def choose_action_baseline(player_cards, dealer_upcard, can_double=False, can_split=False):
     """Simplified hit/stand baseline; not full basic strategy."""
     total = hand_value(player_cards)
     if total <= 11: return "HIT"
@@ -42,7 +44,23 @@ def choose_action_baseline(player_cards, dealer_upcard):
 # ---------------------------------------------------------------------------
 # Dataset-driven playing rule
 # ---------------------------------------------------------------------------
-DATASET_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "player-ev.json")
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_CANDIDATES = (
+    os.environ.get("BLACKJACK_EV_PATH"),
+    os.path.join(_HERE, "player-ev.json"),
+    os.path.join(_HERE, os.pardir, "machine_learning", "data", "player-ev.json"),
+)
+
+
+def find_dataset():
+    """First existing player-ev.json among the candidate locations, else None."""
+    for p in _CANDIDATES:
+        if p and os.path.isfile(p):
+            return os.path.normpath(p)
+    return None
+
+
+DATASET_PATH = find_dataset()
 
 # dataset column per action; return values match the existing "HIT"/"STAND" style
 _COLUMNS = {"STAND": "stand_ev", "HIT": "hit_ev", "DOUBLE": "double_ev", "SPLIT": "split_ev"}
@@ -68,7 +86,12 @@ class StrategyTable:
         self.rules = sorted({k[1] for k in self._rows})
 
     @classmethod
-    def load(cls, path=DATASET_PATH):
+    def load(cls, path=None):
+        path = path or find_dataset()
+        if path is None or not os.path.isfile(path):
+            raise FileNotFoundError(
+                "player-ev.json not found. Put it in machine_learning/data/ (or simulation/), "
+                "set BLACKJACK_EV_PATH, or run with --policy baseline.")
         with open(path) as f:
             return cls(json.load(f)["rows"])
 
@@ -86,6 +109,8 @@ def configure(decks=None, dealer_rule=None, path=None):
     if path is not None and path != _settings["path"]:
         _settings["path"] = path
         _table = None
+    if path is None and _table is None:
+        _settings["path"] = find_dataset()
     if decks is not None:
         _settings["decks"] = decks
     if dealer_rule is not None:
@@ -102,17 +127,12 @@ def _get_table():
     return _table
 
 
-def _is_soft(cards):
-    hard = sum(1 if c.rank == "A" else c.value for c in cards)
-    return any(c.rank == "A" for c in cards) and hard + 10 <= 21
-
-
 def _classify(cards, can_split):
     """Map a hand onto the dataset's (category, hand) labels.
     J/Q/K count as 10 (K,Q is the pair "10,10"); multi-card soft hands use
     their total, so A,2,4 is looked up as "A,6"."""
     total = hand_value(cards)
-    soft = _is_soft(cards)
+    soft = is_soft(cards)
     if can_split and len(cards) == 2 and cards[0].value == cards[1].value:
         v = cards[0].value
         return "pair", ("A,A" if v == 11 else f"{v},{v}"), total, soft

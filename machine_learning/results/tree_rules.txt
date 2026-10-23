@@ -1,0 +1,235 @@
+|--- player_total <= 16.50
+|   |--- pair_value <= 1.00
+|   |   |--- dealer_upcard <= 6.50
+|   |   |   |--- player_total <= 8.50
+|   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |--- player_total <= 7.50
+|   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |--- player_total >  7.50
+|   |   |   |   |   |   |--- dealer_upcard <= 4.50
+|   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |--- dealer_upcard >  4.50
+|   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |--- class: H
+|   |   |   |--- player_total >  8.50
+|   |   |   |   |--- player_total <= 11.50
+|   |   |   |   |   |--- dealer_upcard <= 2.50
+|   |   |   |   |   |   |--- player_total <= 9.50
+|   |   |   |   |   |   |   |--- decks <= 3.00
+|   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |--- decks >  3.00
+|   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |--- player_total >  9.50
+|   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |--- dealer_upcard >  2.50
+|   |   |   |   |   |   |--- class: D
+|   |   |   |   |--- player_total >  11.50
+|   |   |   |   |   |--- is_soft <= 0.50
+|   |   |   |   |   |   |--- player_total <= 12.50
+|   |   |   |   |   |   |   |--- dealer_upcard <= 3.50
+|   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |--- dealer_upcard >  3.50
+|   |   |   |   |   |   |   |   |--- dealer_upcard <= 4.50
+|   |   |   |   |   |   |   |   |   |--- decks <= 5.00
+|   |   |   |   |   |   |   |   |   |   |--- h17 <= 0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |   |   |   |--- h17 >  0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- decks >  5.00
+|   |   |   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |   |   |--- dealer_upcard >  4.50
+|   |   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |--- player_total >  12.50
+|   |   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |   |--- dealer_upcard <= 2.50
+|   |   |   |   |   |   |   |   |   |--- player_total <= 13.50
+|   |   |   |   |   |   |   |   |   |   |--- h17 <= 0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |   |   |   |--- h17 >  0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |   |   |   |--- player_total >  13.50
+|   |   |   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |   |   |--- dealer_upcard >  2.50
+|   |   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |--- is_soft >  0.50
+|   |   |   |   |   |   |--- dealer_upcard <= 3.50
+|   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |--- dealer_upcard >  3.50
+|   |   |   |   |   |   |   |--- dealer_upcard <= 4.50
+|   |   |   |   |   |   |   |   |--- player_total <= 14.50
+|   |   |   |   |   |   |   |   |   |--- decks <= 3.00
+|   |   |   |   |   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- decks >  3.00
+|   |   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |   |--- player_total >  14.50
+|   |   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |--- dealer_upcard >  4.50
+|   |   |   |   |   |   |   |   |--- decks <= 7.00
+|   |   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |   |--- decks >  7.00
+|   |   |   |   |   |   |   |   |   |--- player_total <= 13.50
+|   |   |   |   |   |   |   |   |   |   |--- h17 <= 0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- h17 >  0.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |   |   |--- player_total >  13.50
+|   |   |   |   |   |   |   |   |   |   |--- class: D
+|   |   |--- dealer_upcard >  6.50
+|   |   |   |--- player_total <= 11.50
+|   |   |   |   |--- player_total <= 9.50
+|   |   |   |   |   |--- class: H
+|   |   |   |   |--- player_total >  9.50
+|   |   |   |   |   |--- dealer_upcard <= 9.50
+|   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |--- dealer_upcard >  9.50
+|   |   |   |   |   |   |--- player_total <= 10.50
+|   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |--- player_total >  10.50
+|   |   |   |   |   |   |   |--- h17 <= 0.50
+|   |   |   |   |   |   |   |   |--- dealer_upcard <= 10.50
+|   |   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |   |--- dealer_upcard >  10.50
+|   |   |   |   |   |   |   |   |   |--- decks <= 3.00
+|   |   |   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |   |   |--- decks >  3.00
+|   |   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |--- h17 >  0.50
+|   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |--- player_total >  11.50
+|   |   |   |   |--- class: H
+|   |--- pair_value >  1.00
+|   |   |--- dealer_upcard <= 7.50
+|   |   |   |--- player_total <= 11.00
+|   |   |   |   |--- player_total <= 9.00
+|   |   |   |   |   |--- pair_value <= 3.50
+|   |   |   |   |   |   |--- class: P
+|   |   |   |   |   |--- pair_value >  3.50
+|   |   |   |   |   |   |--- dealer_upcard <= 4.50
+|   |   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |   |--- dealer_upcard <= 3.50
+|   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |   |--- dealer_upcard >  3.50
+|   |   |   |   |   |   |   |   |   |--- class: P
+|   |   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |--- dealer_upcard >  4.50
+|   |   |   |   |   |   |   |--- dealer_upcard <= 6.50
+|   |   |   |   |   |   |   |   |--- class: P
+|   |   |   |   |   |   |   |--- dealer_upcard >  6.50
+|   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |--- player_total >  9.00
+|   |   |   |   |   |--- class: D
+|   |   |   |--- player_total >  11.00
+|   |   |   |   |--- dealer_upcard <= 6.50
+|   |   |   |   |   |--- class: P
+|   |   |   |   |--- dealer_upcard >  6.50
+|   |   |   |   |   |--- pair_value <= 6.50
+|   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |--- class: P
+|   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |--- pair_value >  6.50
+|   |   |   |   |   |   |--- class: P
+|   |   |--- dealer_upcard >  7.50
+|   |   |   |--- pair_value <= 7.50
+|   |   |   |   |--- dealer_upcard <= 9.50
+|   |   |   |   |   |--- player_total <= 9.00
+|   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |--- dealer_upcard <= 8.50
+|   |   |   |   |   |   |   |   |--- pair_value <= 2.50
+|   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |   |--- pair_value >  2.50
+|   |   |   |   |   |   |   |   |   |--- player_total <= 7.00
+|   |   |   |   |   |   |   |   |   |   |--- class: P
+|   |   |   |   |   |   |   |   |   |--- player_total >  7.00
+|   |   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |--- dealer_upcard >  8.50
+|   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |--- player_total >  9.00
+|   |   |   |   |   |   |--- pair_value <= 5.50
+|   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |--- pair_value >  5.50
+|   |   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |   |--- pair_value <= 6.50
+|   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |   |--- pair_value >  6.50
+|   |   |   |   |   |   |   |   |   |--- dealer_upcard <= 8.50
+|   |   |   |   |   |   |   |   |   |   |--- class: P
+|   |   |   |   |   |   |   |   |   |--- dealer_upcard >  8.50
+|   |   |   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |--- dealer_upcard >  9.50
+|   |   |   |   |   |--- class: H
+|   |   |   |--- pair_value >  7.50
+|   |   |   |   |--- class: P
+|--- player_total >  16.50
+|   |--- player_total <= 18.50
+|   |   |--- is_soft <= 0.50
+|   |   |   |--- pair_value <= 4.50
+|   |   |   |   |--- class: S
+|   |   |   |--- pair_value >  4.50
+|   |   |   |   |--- dealer_upcard <= 9.50
+|   |   |   |   |   |--- dealer_upcard <= 6.50
+|   |   |   |   |   |   |--- class: P
+|   |   |   |   |   |--- dealer_upcard >  6.50
+|   |   |   |   |   |   |--- dealer_upcard <= 7.50
+|   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |--- dealer_upcard >  7.50
+|   |   |   |   |   |   |   |--- class: P
+|   |   |   |   |--- dealer_upcard >  9.50
+|   |   |   |   |   |--- class: S
+|   |   |--- is_soft >  0.50
+|   |   |   |--- dealer_upcard <= 6.50
+|   |   |   |   |--- dealer_upcard <= 2.50
+|   |   |   |   |   |--- player_total <= 17.50
+|   |   |   |   |   |   |--- decks <= 3.00
+|   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |--- decks >  3.00
+|   |   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |--- player_total >  17.50
+|   |   |   |   |   |   |--- h17 <= 0.50
+|   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |--- h17 >  0.50
+|   |   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |--- dealer_upcard >  2.50
+|   |   |   |   |   |--- class: D
+|   |   |   |--- dealer_upcard >  6.50
+|   |   |   |   |--- dealer_upcard <= 8.50
+|   |   |   |   |   |--- player_total <= 17.50
+|   |   |   |   |   |   |--- class: H
+|   |   |   |   |   |--- player_total >  17.50
+|   |   |   |   |   |   |--- class: S
+|   |   |   |   |--- dealer_upcard >  8.50
+|   |   |   |   |   |--- class: H
+|   |--- player_total >  18.50
+|   |   |--- dealer_upcard <= 6.50
+|   |   |   |--- dealer_upcard <= 5.50
+|   |   |   |   |--- class: S
+|   |   |   |--- dealer_upcard >  5.50
+|   |   |   |   |--- is_soft <= 0.50
+|   |   |   |   |   |--- class: S
+|   |   |   |   |--- is_soft >  0.50
+|   |   |   |   |   |--- player_total <= 19.50
+|   |   |   |   |   |   |--- h17 <= 0.50
+|   |   |   |   |   |   |   |--- decks <= 1.50
+|   |   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |   |   |--- decks >  1.50
+|   |   |   |   |   |   |   |   |--- class: S
+|   |   |   |   |   |   |--- h17 >  0.50
+|   |   |   |   |   |   |   |--- class: D
+|   |   |   |   |   |--- player_total >  19.50
+|   |   |   |   |   |   |--- class: S
+|   |   |--- dealer_upcard >  6.50
+|   |   |   |--- class: S

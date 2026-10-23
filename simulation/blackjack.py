@@ -25,9 +25,15 @@ class Shoe:
     def reshuffle(self):
         self.cards = [Card(r) for _ in range(self.decks) for r in RANKS for _ in range(4)]
         self.rng.shuffle(self.cards)
+        self.hidden = []            # dealt face-down, not yet seen by the player
         self.running_count = 0
     @property
     def cards_remaining(self): return len(self.cards)
+    @property
+    def unseen_cards(self):
+        """Cards the player hasn't seen: the undealt shoe plus any face-down cards.
+        Agents must use this, not `cards`, or they'd effectively know the hole card."""
+        return self.cards + self.hidden
     @property
     def decks_remaining(self): return max(len(self.cards)/52, 0.25)
     @property
@@ -38,11 +44,15 @@ class Shoe:
         card = self.cards.pop()
         if exposed:
             self.running_count += HI_LO[card.rank]
+        else:
+            self.hidden.append(card)
         return card
 
     def reveal(self, card):
         """Add a previously hidden card to the count when it becomes visible."""
         self.running_count += HI_LO[card.rank]
+        if card in self.hidden:
+            self.hidden.remove(card)
 
 def hand_value(cards):
     total = sum(c.value for c in cards)
@@ -51,3 +61,20 @@ def hand_value(cards):
         total -= 10
         aces -= 1
     return total
+
+
+def is_soft(cards):
+    """True if an ace is currently being counted as 11."""
+    hard = sum(1 if c.rank == "A" else c.value for c in cards)
+    return any(c.rank == "A" for c in cards) and hard + 10 <= 21
+
+
+def is_blackjack(cards):
+    """A natural: exactly two cards totalling 21."""
+    return len(cards) == 2 and hand_value(cards) == 21
+
+
+def dealer_should_hit(cards, hit_soft_17=True):
+    """Dealer draws below 17, and on soft 17 under H17 rules."""
+    total = hand_value(cards)
+    return total < 17 or (total == 17 and hit_soft_17 and is_soft(cards))

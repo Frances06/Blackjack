@@ -1,0 +1,7 @@
+model,cv_accuracy,cv_regret_cents
+Majority class (baseline),0.4221,22.817
+Decision tree,0.9927,0.009
+Random forest,0.9876,0.026
+k-nearest neighbours (k=5),0.8858,1.371
+Logistic regression,0.7373,3.665
+Neural network (MLP 64-64),0.9861,0.048

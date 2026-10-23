@@ -8,7 +8,6 @@ from functools import lru_cache
 from heapq import heappush, heappop
 from itertools import count
 
-from simulation.blackjack import Shoe
 
 
 # ---------------------------------------------------------------------------
@@ -95,40 +94,59 @@ def astar(start, goal, neighbors, heuristic=lambda n: 0):
 # Blackjack application: exact dealer outcomes via DFS over the shoe
 # ---------------------------------------------------------------------------
 _VALUES = (2, 3, 4, 5, 6, 7, 8, 9, 10, 11)   # 11 = ace; J/Q/K folded into 10
+_KEYS = (17, 18, 19, 20, 21, "bust", "blackjack")
 
 
-def _composition(shoe):
-    c = Counter(card.value for card in shoe.cards)
+def composition(cards):
+    """Count of each value 2..11 (ace = 11) in a list of Cards, as a tuple."""
+    c = Counter(card.value for card in cards)
     return tuple(c.get(v, 0) for v in _VALUES)
 
 
-def dealer_outcomes(shoe, upcard, hit_soft_17=False):
+def dealer_outcomes(shoe, upcard, hit_soft_17=False, dealer_peeked=False):
     """Exact probability distribution of the dealer's final hand.
 
     Does a DFS over every possible draw sequence from the cards actually left
     in `shoe` (finite-shoe, so it reflects the current count), weighting each
     branch by its draw probability. Memoised on (composition, total, soft).
 
-    upcard -- a Card or a value 2..11
+    upcard        -- a Card or a value 2..11
+    hit_soft_17   -- dealer rule; match the game loop (simulation default is H17)
+    dealer_peeked -- condition on the dealer NOT having blackjack, which is what
+                     the player knows when acting after a peek (10 or ace up).
+    Note: `shoe` should be the cards unseen by the player; in the simulator the
+    hole card has already been popped from shoe.cards, so add it back if you want
+    the exact pre-reveal distribution.
     Returns dict with keys 17..21, 'bust', 'blackjack' summing to 1.
     """
     up = upcard if isinstance(upcard, int) else upcard.value
+    return dealer_outcomes_from(composition(shoe.cards), up, hit_soft_17, dealer_peeked)
+
+
+def dealer_outcomes_from(comp, up, hit_soft_17=False, dealer_peeked=False):
+    """Same as dealer_outcomes, from a composition tuple (see `composition`)
+    and an upcard value 2..11. Used by the search agent."""
+
+    # Outcomes are kept as a 7-tuple of probabilities, in the order of KEYS,
+    # which is several times faster than building dicts at every node.
+    zero = (0.0,) * 7
+    leaf = {k: tuple(1.0 if i == j else 0.0 for j in range(7)) for i, k in enumerate(_KEYS)}
 
     @lru_cache(maxsize=None)
     def walk(comp, hard, has_ace, n_cards):
         soft_total = hard + 10 if has_ace and hard + 10 <= 21 else hard
         is_soft = soft_total != hard
         if n_cards == 2 and soft_total == 21:
-            return {"blackjack": 1.0}
+            return leaf["blackjack"]
         if hard > 21:
-            return {"bust": 1.0}
+            return leaf["bust"]
         if soft_total > 17 or (soft_total == 17 and not (is_soft and hit_soft_17)):
-            return {soft_total: 1.0}
+            return leaf[soft_total]
 
         remaining = sum(comp)
         if remaining == 0:
             raise RuntimeError("Shoe ran out during dealer DFS")
-        out = Counter()
+        out = list(zero)
         for i, n in enumerate(comp):
             if not n:
                 continue
@@ -136,10 +154,13 @@ def dealer_outcomes(shoe, upcard, hit_soft_17=False):
             nxt = comp[:i] + (n - 1,) + comp[i + 1:]
             sub = walk(nxt, hard + (1 if v == 11 else v), has_ace or v == 11, n_cards + 1)
             p = n / remaining
-            for k, q in sub.items():
-                out[k] += p * q
-        return dict(out)
+            for j in range(7):
+                out[j] += p * sub[j]
+        return tuple(out)
 
-    result = walk(_composition(shoe), 1 if up == 11 else up, up == 11, 1)
-    keys = [17, 18, 19, 20, 21, "bust", "blackjack"]
-    return {k: result.get(k, 0.0) for k in keys}
+    result = dict(zip(_KEYS, walk(comp, 1 if up == 11 else up, up == 11, 1)))
+    out = result
+    if dealer_peeked and out["blackjack"] < 1:
+        p_bj = out["blackjack"]
+        out = {k: (0.0 if k == "blackjack" else v / (1 - p_bj)) for k, v in out.items()}
+    return out

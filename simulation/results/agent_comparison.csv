@@ -1,0 +1,6 @@
+agent,table_match,table_regret_cents,flat_edge,flat_edge_se,count_edge,count_edge_se,count_sessions_depleted,seconds
+Baseline rule (hand-written),0.6242,7.5664,-0.0355,0.0022,-0.03126,0.00333,31,2.3
+Lookup table (dataset),1.0,0.0,-0.00562,0.00258,-0.00176,0.0038,37,3.7
+ML: decision tree,1.0,0.0,-0.00562,0.00258,-0.00176,0.0038,37,24.3
+ML: Monte Carlo control (RL),0.8939,0.7706,-0.00648,0.00256,-0.00073,0.00378,37,2.9
+Search: expectimax,1.0,0.0,-0.00297,0.00257,0.00355,0.00391,41,320.3
