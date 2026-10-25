@@ -1,7 +1,22 @@
-# Blackjack agent
+# ♠ Blackjack Agent <span style=color:red>♦</span>
 
-A blackjack simulator with Hi-Lo card counting, and several AI agents that
-play it, compared on the same games:
+<p align="center">
+  <strong>A BLACKJACK SIMULATOR WITH HI-LO CARD COUNTING</strong>
+  <br />
+  Exploring how different decision-making strategies perform under the same conditions.
+</p>
+
+<p align="center">
+  <code>Python 3.9+</code> &nbsp; · &nbsp; <code>AI & Search</code> &nbsp; · &nbsp; <code>Machine Learning</code>
+</p>
+
+## ♣ The Table
+
+What happens when different approaches to intelligence sit down at the same Blackjack table?
+
+This project explores that question through a simulator with five playing agents. Each agent faces the same games, with a shared Hi-Lo betting system, so their playing strategies can be compared on a common footing.
+
+## <span style=color:red>♦</span> Meet the Agents
 
 | Agent | Type | How it decides |
 |---|---|---|
@@ -11,58 +26,94 @@ play it, compared on the same games:
 | `mc` | ML (reinforcement learning) | Monte Carlo control, learns only by playing |
 | `search` | search | expectimax over the cards left in the shoe, using an exact dealer DFS |
 
-All agents bet with the same Hi-Lo count ramp (or flat bets), so differences
-come from how they play.
+All agents use the same Hi-Lo count-based betting ramp (or flat betting) when configured. This helps keep the comparison focused on how they choose their playing actions.
 
-## Setup
-Python 3.9+, scikit-learn (for the `tree` agent and classifier comparison) and matplotlib (for charts):
-```
+## ♠ Get Started
+
+### Requirements
+
+- Python 3.9 or later
+- Dependencies listed in `requirements.txt`
+
+Install the dependencies from the repository root:
+
+```bash
 python3 -m pip install -r requirements.txt
 ```
-Put `player-ev.json` in `machine_learning/data/` (or set `BLACKJACK_EV_PATH`).
 
-## Run (from the repo root)
+### Run the table
+
+Run commands from the repository root.
+
+**Test the simulator**
+
+```bash
+python3 -m unittest simulation.test_simulation
 ```
-python3 -m unittest simulation.test_simulation       # tests
 
-# compare every agent (uses all CPU cores; a few minutes)
+**Compare all agents**
+
+```bash
 python3 -m simulation.compare_agents
+```
 
-# machine learning
-python3 -m machine_learning.train_classifier         # compare classifiers, tune the tree
-python3 -m machine_learning.monte_carlo              # (re)train the RL agent
+This comparison uses all available CPU cores and may take a few minutes.
 
-# one agent / betting experiments
+**Train and explore**
+
+```bash
+# Compare classifiers and tune the decision tree
+python3 -m machine_learning.train_classifier
+
+# Train the Monte Carlo reinforcement-learning agent
+python3 -m machine_learning.monte_carlo
+```
+
+**Run an individual agent or betting experiment**
+
+```bash
 python3 -m simulation.run_simulation --policy search
-python3 -m simulation.run_experiments --policy dataset --sessions 2000 --hands 200
+
+python3 -m simulation.run_experiments \
+  --policy dataset \
+  --sessions 2000 \
+  --hands 200
 ```
-Each script writes CSVs to a `results/` folder next to it. To turn them into
-charts for the report (PNG files in `analysis/figures/`):
-```
+
+Generated CSV results are written to the relevant `results/` directories. To generate figures for analysis:
+
+```bash
 python3 -m analysis.make_charts
 ```
 
-## Rules modelled
-6 decks, dealer hits soft 17 (`--s17` to change), blackjack pays 3:2, dealer
-peeks with 10/A up, double on any two cards, one split (split aces get one
-card), double after split, reshuffle with 78 cards left. No insurance/surrender.
+## <span style=color:red>♥</span> Rules of the House
 
-## Layout
-- `simulation/` – shoe and counting (`blackjack.py`), betting and lookup
-  policies (`strategy.py`), game loop (`run_simulation.py`), betting
-  experiment (`run_experiments.py`), agent comparison (`compare_agents.py`), tests.
-- `search/` – generic DFS and A* (`search.py`), exact dealer-outcome DFS,
-  and the expectimax playing agent (`agent.py`).
-- `analysis/` – `make_charts.py` turns the results CSVs into report figures.
-- `machine_learning/` – classifier agent and model comparison
-  (`classifier.py`, `train_classifier.py`), Monte Carlo control agent
-  (`monte_carlo.py`), trained Q table in `models/`, dataset in `data/`.
+The simulator models a six-deck Blackjack game with the following rules:
 
-## Data
-`player-ev.json` – "Blackjack Basic-Strategy Expected Value by Action" v1.0
-(updated 2026-08-09), CC BY 4.0, methodology at
-https://blackjackoddstrainer.com/methodology/. 3,300 rows: 1/2/4/6/8 decks ×
-S17/H17 × hard/soft/pair hands × dealer upcard, with stand/hit/double/split
-EVs in cents per dollar. The EVs are modelled (fixed-proportion draws,
-approximate split values), not simulated. Cite the source and access date
-in the report.
+- Dealer hits on soft 17 by default; use `--s17` to change this behaviour.
+- Natural Blackjack pays 3:2.
+- The dealer peeks when showing a ten-value card or an ace.
+- Double down is allowed on any initial two-card hand.
+- One split is allowed, with split aces receiving one additional card.
+- Doubling after a split is allowed.
+- The shoe is reshuffled when 78 cards remain.
+- Insurance and surrender are not modelled.
+
+## ♣ Inside the Repository
+
+| Directory | What's inside |
+|:--|:--|
+| `simulation/` | Blackjack engine, shoe and card counting (`blackjack.py`), betting and lookup policies (`strategy.py`), simulation runners, experiments  and tests |
+| `search/` | Generic search algorithms (`search.py`), exact dealer-outcome search and the expectimax agent (`agent.py`) |
+| `machine_learning/` | Decision-tree training, classifier comparisons (`classifier.py`, `train_classifier.py`), Monte Carlo control (`monte_carlo.py`), models and input data (`data/`) |
+| `analysis/` | Tools for turning simulation results into report figures |
+
+## <span style=color:red>♦</span> Data Behind the Decisions
+
+`player-ev.json` contains **Blackjack Basic-Strategy Expected Value by Action**, version 1.0, updated 9 August 2026.
+
+The dataset contains 3,300 modelled entries covering deck counts, dealer rules, hand types and dealer upcards, with expected values for available actions.
+
+These values are modelled rather than generated by direct simulation, and some split-hand values are approximate. The dataset is licensed under **CC BY 4.0**.
+
+Source and methodology: [Blackjack Odds Trainer](https://blackjackoddstrainer.com/methodology/).
