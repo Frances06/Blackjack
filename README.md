@@ -1,4 +1,4 @@
-# ♠ Blackjack Agent <span style=color:red>♦</span>
+# ♠ Blackjack Agent <span style=color:red>♦</span> 
 
 <p align="center">
   <strong>A BLACKJACK SIMULATOR WITH HI-LO CARD COUNTING</strong>
