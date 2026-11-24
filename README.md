@@ -19,7 +19,7 @@ This project explores that question through a simulator with five playing agents
 ## <span style=color:red>♦</span> Meet the Agents
 
 | Agent | Type | How it decides |
-|---|---|---|
+|--|---|--|
 | `baseline` | hand-written rule | hit below 12, simple stand rules |
 | `dataset` | lookup | best action from `player-ev.json` |
 | `tree` | ML (supervised) | decision tree trained on `player-ev.json` |
